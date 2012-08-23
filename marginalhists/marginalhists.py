@@ -41,8 +41,9 @@ class MarginalHistScatter(object):
         self.xfirst_ax = None
         self.yfirst_ax = None
 
-    def append(self, x, y, scatter_kwargs, hist_kwargs,
-            add_regression=False, regression_kwargs=None, num_ticks=3):
+    def append(self, x, y, scatter_kwargs, hist_kwargs, add_regression=False,
+            regression_kwargs=None, num_ticks=3, labels=None,
+            hist_share=False):
         """
         Adds a new scatter to self.scatter_ax as well as marginal histograms
         for the same data, borrowing addtional room from the axes.
@@ -56,6 +57,13 @@ class MarginalHistScatter(object):
         by `regression_kwargs`.
 
         `num_ticks` sets how many tick marks to use
+
+        `labels` is an optional NumPy array of labels that will be set on the
+        collection so that they can be accessed by a callback function.
+
+        If `hist_share` is True, then all histograms will share the same
+        frequency axes.  Useful for showing relative heights if you don't want
+        to use the hist_kwarg `normed=True`
         """
         regression_kwargs = regression_kwargs or {}
         scatter_kwargs = scatter_kwargs or {}
@@ -63,6 +71,7 @@ class MarginalHistScatter(object):
 
         # Plot the scatter
         self.scatter_ax.scatter(x, y, **scatter_kwargs)
+        self.scatter_ax.collections[-1].labels = labels
 
         # provided hist_kwargs will be updated with these additional kwargs:
         xhist_kwargs = dict()
@@ -82,9 +91,9 @@ class MarginalHistScatter(object):
         axhisty.xaxis.set_major_locator(
                 MaxNLocator(nbins=num_ticks, prune='both'))
 
-        if not self.xfirst_ax:
+        if not self.xfirst_ax and hist_share:
             self.xfirst_ax = axhistx
-        if not self.yfirst_ax:
+        if not self.yfirst_ax and hist_share:
             self.yfirst_ax = axhisty
 
         # keep track of which axes are which, because looking into fig.axes
