@@ -31,7 +31,7 @@ class MarginalHistScatter(object):
 
         self.scatter_ax = ax
         if self.scatter_ax:
-           self.fig = self.scatter_ax.figure
+            self.fig = self.scatter_ax.figure
         else:
             self.fig = None
         self.top_hists = []
@@ -41,10 +41,12 @@ class MarginalHistScatter(object):
         self.xfirst_ax = None
         self.yfirst_ax = None
 
-
     def append(self, x, y, scatter_kwargs, hist_kwargs,
             add_regression=False, regression_kwargs=None, num_ticks=3):
         """
+        Adds a new scatter to self.scatter_ax as well as marginal histograms
+        for the same data, borrowing addtional room from the axes.
+
         `x` and `y` are the data to use
 
         `scatter_kwargs` configure the scatter; `hist_kwargs` configure the
@@ -123,25 +125,3 @@ class MarginalHistScatter(object):
             except KeyError:
                 color = 'k'
             self.scatter_ax.plot(xr, yr, color=color, **regression_kwargs)
-
-
-if __name__ == "__main__":
-    import numpy as np
-    x1 = np.random.normal(0, 0.5, 1000)
-    y1 = np.random.normal(0, 0.5, 1000)
-
-    x2 = np.random.normal(0.5, 0.5, 500)
-    y2 = (np.random.normal(0.2, 0.1, 500))
-
-    fig = plt.figure()
-    ax1 = fig.add_subplot(111)
-
-    m = MarginalHistScatter(ax1)
-    m.append(x1, y1,
-            scatter_kwargs=dict(c='k', linewidths=0, alpha=0.5, marker='.'),
-            hist_kwargs=dict(label='all', color='k', alpha=0.5, bins=20))
-    m.append(x2, y2,
-            scatter_kwargs=dict(c='r', alpha=0.5),
-            hist_kwargs=dict(label='subset', color='r', bins=20))
-
-    plt.show()
