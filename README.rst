@@ -23,7 +23,9 @@ Set up a figure and axes, and then pass it to the MarginalHistScatter::
     >>> from marginalhists import MarginalHistScatter
     >>> m = MarginalHistScatter(ax1)
 
-Append data::
+Append data, configuring colors and styles for scatter and histograms
+separately.  Each call to ``append()`` will add a new set of points to the
+axes and will add new marginal histograms to the top and bottom::
 
     >>> m.append(x1, y1,
     ...     scatter_kwargs=dict(c='k', linewidths=0, alpha=0.5, marker='.'),
