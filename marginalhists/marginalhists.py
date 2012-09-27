@@ -41,9 +41,6 @@ class MarginalHistScatter(object):
         self.xfirst_ax = None
         self.yfirst_ax = None
 
-    def append(self, x, y, scatter_kwargs, hist_kwargs, add_regression=False,
-            regression_kwargs=None, num_ticks=3, labels=None,
-            hist_share=False):
         # will hold histogram data
         self.hxs = {}
         self.hys = {}
@@ -63,14 +60,21 @@ class MarginalHistScatter(object):
     @property
     def ymin(self):
         return self.scatter_ax.dataLim.ymin
+
+    def append(self, x, y, scatter_kwargs, hist_kwargs, xhist_kwargs=None,
+               yhist_kwargs=None, add_regression=False, regression_kwargs=None,
+               num_ticks=3, labels=None, hist_share=False):
         """
         Adds a new scatter to self.scatter_ax as well as marginal histograms
         for the same data, borrowing addtional room from the axes.
 
         `x` and `y` are the data to use
 
-        `scatter_kwargs` configure the scatter; `hist_kwargs` configure the
-        corresponding marginal hists.
+        `scatter_kwargs` configure the scatter; `hist_kwargs` are shared kwargs
+        to configure the corresponding marginal hists.
+
+        Any additional arguments in `xhist_kwargs` or `yhist_kwargs` will be
+        used to update the common `hist_kwargs`.  yhist_kwargs will
 
         `add_regression` will add a regression line to the scatter, configured
         by `regression_kwargs`.
@@ -87,14 +91,14 @@ class MarginalHistScatter(object):
         regression_kwargs = regression_kwargs or {}
         scatter_kwargs = scatter_kwargs or {}
         hist_kwargs = hist_kwargs or {}
+        xhist_kwargs = xhist_kwargs or {}
+        yhist_kwargs = yhist_kwargs or {}
+
+        yhist_kwargs.update(dict(orientation='horizontal'))
 
         # Plot the scatter
         self.scatter_ax.scatter(x, y, **scatter_kwargs)
         self.scatter_ax.collections[-1].labels = labels
-
-        # provided hist_kwargs will be updated with these additional kwargs:
-        xhist_kwargs = dict()
-        yhist_kwargs = dict(orientation='horizontal')
 
         xhk = _updatecopy(hist_kwargs, xhist_kwargs)
         yhk = _updatecopy(hist_kwargs, yhist_kwargs)
