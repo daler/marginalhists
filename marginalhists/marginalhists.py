@@ -99,16 +99,18 @@ class MarginalHistScatter(object):
         xhk = _updatecopy(hist_kwargs, xhist_kwargs)
         yhk = _updatecopy(hist_kwargs, yhist_kwargs)
 
-        axhistx = self.divider.append_axes('top', size=self.hist_size,
-                pad=self.pad, sharex=self.scatter_ax, sharey=self.xfirst_ax)
+        axhistx = self.divider.append_axes(
+            'top', size=self.hist_size,
+            pad=self.pad, sharex=self.scatter_ax, sharey=self.xfirst_ax)
 
-        axhisty = self.divider.append_axes('right', size=self.hist_size,
-                pad=self.pad, sharey=self.scatter_ax, sharex=self.yfirst_ax)
+        axhisty = self.divider.append_axes(
+            'right', size=self.hist_size,
+            pad=self.pad, sharey=self.scatter_ax, sharex=self.yfirst_ax)
 
         axhistx.yaxis.set_major_locator(
-                MaxNLocator(nbins=num_ticks, prune='both'))
+            MaxNLocator(nbins=num_ticks, prune='both'))
         axhisty.xaxis.set_major_locator(
-                MaxNLocator(nbins=num_ticks, prune='both'))
+            MaxNLocator(nbins=num_ticks, prune='both'))
 
         if not self.xfirst_ax and hist_share:
             self.xfirst_ax = axhistx
