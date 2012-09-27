@@ -44,6 +44,10 @@ class MarginalHistScatter(object):
     def append(self, x, y, scatter_kwargs, hist_kwargs, add_regression=False,
             regression_kwargs=None, num_ticks=3, labels=None,
             hist_share=False):
+        # will hold histogram data
+        self.hxs = {}
+        self.hys = {}
+
     @property
     def xmax(self):
         return self.scatter_ax.dataLim.xmax
@@ -120,6 +124,9 @@ class MarginalHistScatter(object):
         # here.
         hx = _clean(x)
         hy = _clean(y)
+
+        self.hxs[hist_kwargs['label']] = hx
+        self.hys[hist_kwargs['label']] = hy
 
         # Only plot hists if there's valid data
         if len(hx) > 0:
