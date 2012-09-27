@@ -44,6 +44,21 @@ class MarginalHistScatter(object):
     def append(self, x, y, scatter_kwargs, hist_kwargs, add_regression=False,
             regression_kwargs=None, num_ticks=3, labels=None,
             hist_share=False):
+    @property
+    def xmax(self):
+        return self.scatter_ax.dataLim.xmax
+
+    @property
+    def ymax(self):
+        return self.scatter_ax.dataLim.ymax
+
+    @property
+    def xmin(self):
+        return self.scatter_ax.dataLim.xmin
+
+    @property
+    def ymin(self):
+        return self.scatter_ax.dataLim.ymin
         """
         Adds a new scatter to self.scatter_ax as well as marginal histograms
         for the same data, borrowing addtional room from the axes.
